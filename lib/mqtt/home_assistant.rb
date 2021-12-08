@@ -159,8 +159,9 @@ module MQTT
                              entity_category: entity_category,
                              icon: icon)
         config[:unique_id] = "#{node.device.id}_#{id || node.id}"
+        read_only_props = %i[action current_temperature]
         properties.each do |prefix, property|
-          add_property(config, property, prefix, templates)
+          add_property(config, property, prefix, templates, read_only: read_only_props.include?(prefix))
         end
         temp_properties = [
           temperature_property,
@@ -472,16 +473,17 @@ module MQTT
 
       private
 
-      def add_property(config, property, prefix = nil, templates = {})
+      def add_property(config, property, prefix = nil, templates = {}, read_only: false)
         return unless property
 
         prefix = "#{prefix}_" if prefix
-        config[:"#{prefix}state_topic"] = property.topic if property.retained?
-        if property.settable?
+        state_prefix = "state_" unless read_only
+        config[:"#{prefix}#{state_prefix}topic"] = property.topic if property.retained?
+        if !read_only && property.settable?
           config[:"#{prefix}command_topic"] = "#{property.topic}/set"
           config[:"#{prefix}command_template"] = "{{ value | round(0) }}" if property.datatype == :integer
         end
-        config.merge!(templates.slice(:"#{prefix}_template", :"#{prefix}_command_template"))
+        config.merge!(templates.slice(:"#{prefix}template", :"#{prefix}command_template"))
       end
 
       def add_enum(config, property, prefix = nil, valid_set = nil)
