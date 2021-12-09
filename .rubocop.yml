@@ -20,6 +20,8 @@ Style/Alias:
   EnforcedStyle: prefer_alias_method
 Style/BlockDelimiters:
   IgnoredMethods: []
+Style/DocumentDynamicEvalDefinition:
+  Enabled: false
 Style/Documentation:
   Enabled: false
 Style/HashSyntax:

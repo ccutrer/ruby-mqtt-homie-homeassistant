@@ -2,6 +2,11 @@
 
 require "json"
 
+require "mqtt/homie"
+require "mqtt/home_assistant/homie/device"
+require "mqtt/home_assistant/homie/node"
+require "mqtt/home_assistant/homie/property"
+
 module MQTT
   module HomeAssistant
     class << self
@@ -211,13 +216,13 @@ module MQTT
                              entity_category: entity_category,
                              icon: icon,
                              templates: {})
-        add_property(config, oscillation_property, :oscillation_property, templates)
-        add_property(config, percentage_property, :percentage, templates)
+        add_property(config, oscillation_property, :oscillation_property, templates: templates)
+        add_property(config, percentage_property, :percentage, templates: templates)
         if percentage_property&.range
           config[:speed_range_min] = percentage_property.range.begin
           config[:speed_range_max] = percentage_property.range.end
         end
-        add_property(config, preset_mode_property, :preset, templates)
+        add_property(config, preset_mode_property, :preset, templates: templates)
         add_enum(config, preset_mode_property, :preset)
 
         publish(node.mqtt, "fan", config, discovery_prefix: discovery_prefix)
@@ -301,6 +306,7 @@ module MQTT
                              device: device,
                              entity_category: entity_category,
                              icon: icon)
+        config[:unique_id] = "#{property.device.id}_#{property.node.id}_#{property.id}"
         add_property(config, property)
         case property.datatype
         when :boolean
@@ -311,21 +317,21 @@ module MQTT
         when :float
           config[:payload_off] = "0.0"
         end
-        add_property(config, brightness_property, :brightness, templates)
+        add_property(config, brightness_property, :brightness, templates: templates)
         config[:brightness_scale] = brightness_property.range.end if brightness_property&.range
-        add_property(config, color_mode_property, :color_mode, templates)
-        add_property(config, color_temp_property, :color_temp, templates)
+        add_property(config, color_mode_property, :color_mode, templates: templates)
+        add_property(config, color_temp_property, :color_temp, templates: templates)
         if color_temp_property&.range && color_temp_property.unit == "mired"
           config[:min_mireds] = color_temp_property.range.begin
           config[:max_mireds] = color_temp_property.range.end
         end
-        add_property(config, effect_property, :effect, templates)
+        add_property(config, effect_property, :effect, templates: templates)
         config[:effect_list] = effect_property.range if effect_property&.datatype == :enum
-        add_property(config, hs_property, :hs, templates)
-        add_property(config, rgb_property, :rgb, templates)
-        add_property(config, white_property, :white, templates)
+        add_property(config, hs_property, :hs, templates: templates)
+        add_property(config, rgb_property, :rgb, templates: templates)
+        add_property(config, white_property, :white, templates: templates)
         config[:white_scale] = white_property.range.end if white_property&.range
-        add_property(config, xy_property, :xy, templates)
+        add_property(config, xy_property, :xy, templates: templates)
         config[:on_command_type] = on_command_type if on_command_type
 
         publish(property.mqtt, "light", config, discovery_prefix: discovery_prefix)
@@ -473,7 +479,7 @@ module MQTT
 
       private
 
-      def add_property(config, property, prefix = nil, templates = {}, read_only: false)
+      def add_property(config, property, prefix = nil, templates: {}, read_only: false)
         return unless property
 
         prefix = "#{prefix}_" if prefix
