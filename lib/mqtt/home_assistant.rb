@@ -166,7 +166,7 @@ module MQTT
         config[:unique_id] = "#{node.device.id}_#{id || node.id}"
         read_only_props = %i[action current_temperature]
         properties.each do |prefix, property|
-          add_property(config, property, prefix, templates, read_only: read_only_props.include?(prefix))
+          add_property(config, property, prefix, templates: templates, read_only: read_only_props.include?(prefix))
         end
         temp_properties = [
           temperature_property,
