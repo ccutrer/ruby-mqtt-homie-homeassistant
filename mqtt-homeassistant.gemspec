@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 2.5"
 
-  s.add_dependency "homie-mqtt", "~> 1.5"
+  s.add_dependency "homie-mqtt", "~> 1.6"
   s.add_dependency "json", "~> 2.0"
 
   s.add_development_dependency "byebug", "~> 11.0"
