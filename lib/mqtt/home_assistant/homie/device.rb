@@ -1,3 +1,9 @@
 # frozen_string_literal: true
 
-MQTT::Homie::Device.attr_accessor :home_assistant_device, :home_assistant_discovery_prefix
+module MQTT
+  module Homie
+    class Device
+      attr_accessor :home_assistant_device, :home_assistant_discovery_prefix
+    end
+  end
+end
