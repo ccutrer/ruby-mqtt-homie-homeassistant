@@ -105,7 +105,7 @@ module MQTT
                  .merge({
                           payload_off: "false",
                           payload_on: "true",
-                          unique_id: "#{property.device.id}_#{property.node.id}_#{property.id}",
+                          object_id: "#{property.node.id}_#{property.id}",
                           state_topic: property.topic
                         })
         config[:expire_after] = expire_after if expire_after
@@ -163,7 +163,8 @@ module MQTT
                              device: device,
                              entity_category: entity_category,
                              icon: icon)
-        config[:unique_id] = "#{node.device.id}_#{id || node.id}"
+
+        config[:object_id] = id || node.id
         read_only_props = %i[action current_temperature]
         properties.each do |prefix, property|
           add_property(config, property, prefix, templates: templates, read_only: read_only_props.include?(prefix))
@@ -258,7 +259,7 @@ module MQTT
                           target_humidity_command_topic: "#{target_property.topic}/set",
                           payload_off: "false",
                           payload_on: "true",
-                          unique_id: "#{property.device.id}_#{id || property.node.id}"
+                          object_id: id || property.node.id
                         })
         add_property(config, property)
         add_property(config, target_property, :target_humidity)
@@ -306,7 +307,7 @@ module MQTT
                              device: device,
                              entity_category: entity_category,
                              icon: icon)
-        config[:unique_id] = "#{property.device.id}_#{property.node.id}_#{property.id}"
+        config[:object_id] = "#{property.node.id}_#{property.id}"
         add_property(config, property)
         case property.datatype
         when :boolean
@@ -354,7 +355,7 @@ module MQTT
                              device: device,
                              entity_category: entity_category,
                              icon: icon)
-        config[:unique_id] = "#{property.device.id}_#{property.node.id}_#{property.id}"
+        config[:object_id] = "#{property.node.id}_#{property.id}"
         add_property(config, property)
         config[:unit_of_measurement] = property.unit if property.unit
         if property.range
@@ -383,7 +384,7 @@ module MQTT
                              device: device,
                              entity_category: entity_category,
                              icon: icon)
-        config[:unique_id] = "#{property.device.id}_#{property.node.id}_#{property.id}"
+        config[:object_id] = "#{property.node.id}_#{property.id}"
         add_property(config, property)
         config[:payload_on] = property.range.first
 
@@ -406,7 +407,7 @@ module MQTT
                              device: device,
                              entity_category: entity_category,
                              icon: icon)
-        config[:unique_id] = "#{property.device.id}_#{property.node.id}_#{property.id}"
+        config[:object_id] = "#{property.node.id}_#{property.id}"
         add_property(config, property)
         config[:options] = property.range
 
@@ -440,7 +441,7 @@ module MQTT
                              entity_category: entity_category,
                              icon: icon)
                  .merge({
-                          unique_id: "#{property.device.id}_#{property.node.id}_#{property.id}",
+                          object_id: "#{property.node.id}_#{property.id}",
                           state_topic: property.topic
                         })
         config[:state_class] = state_class if state_class
@@ -468,7 +469,7 @@ module MQTT
                              entity_category: entity_category,
                              icon: icon)
                  .merge({
-                          unique_id: "#{property.device.id}_#{property.node.id}_#{property.id}",
+                          object_id: "#{property.node.id}_#{property.id}",
                           payload_off: "false",
                           payload_on: "true"
                         })
@@ -514,6 +515,7 @@ module MQTT
 
         config = {
           name: name,
+          node_id: homie_device.id,
           availability_topic: "#{homie_device.topic}/$state",
           payload_available: "ready",
           payload_not_available: "lost",
@@ -533,7 +535,12 @@ module MQTT
       end
 
       def publish(mqtt, component, config, discovery_prefix:)
-        mqtt.publish("#{discovery_prefix || "homeassistant"}/#{component}/#{config[:unique_id]}/config",
+        node_id, object_id = config.values_at(:node_id, :object_id)
+        config = config.dup
+        config[:unique_id] = "#{node_id}_#{object_id}"
+        config.delete(:node_id)
+        config.delete(:object_id)
+        mqtt.publish("#{discovery_prefix || "homeassistant"}/#{component}/#{node_id}/#{object_id}/config",
                      config.to_json,
                      retain: true,
                      qos: 1)
