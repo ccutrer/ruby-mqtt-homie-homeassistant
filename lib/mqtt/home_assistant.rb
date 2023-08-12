@@ -97,7 +97,7 @@ module MQTT
         end
 
         config = base_config(property.device,
-                             property.full_name,
+                             "#{property.node.name} #{property.name}",
                              device_class: device_class,
                              device: device,
                              entity_category: entity_category,
@@ -159,7 +159,7 @@ module MQTT
         node = properties.first.last.node
 
         config = base_config(node.device,
-                             name || node.full_name,
+                             name || node.name,
                              device: device,
                              entity_category: entity_category,
                              icon: icon)
@@ -211,7 +211,7 @@ module MQTT
         icon: nil
       )
         config = base_config(property.device,
-                             name || property.node.full_name,
+                             name || property.node.name,
                              device: device,
                              device_class: device_class,
                              entity_category: entity_category,
@@ -249,7 +249,7 @@ module MQTT
         end
 
         config = base_config(property.device,
-                             name || property.node.full_name,
+                             name || property.node.name,
                              device: device,
                              device_class: device_class,
                              entity_category: entity_category,
@@ -303,7 +303,7 @@ module MQTT
         end
 
         config = base_config(property.device,
-                             property.full_name,
+                             "#{property.node.name} #{property.name}",
                              device: device,
                              entity_category: entity_category,
                              icon: icon)
@@ -351,7 +351,7 @@ module MQTT
                                                                                       float].include?(property.datatype)
 
         config = base_config(property.device,
-                             property.full_name,
+                             "#{property.node.name} #{property.name}",
                              device: device,
                              entity_category: entity_category,
                              icon: icon)
@@ -380,7 +380,7 @@ module MQTT
         end
 
         config = base_config(property.device,
-                             property.full_name,
+                             "#{property.node.name} #{property.name}",
                              device: device,
                              entity_category: entity_category,
                              icon: icon)
@@ -403,7 +403,7 @@ module MQTT
         raise ArgumentError, "Homie property must be settable" unless property.settable?
 
         config = base_config(property.device,
-                             property.full_name,
+                             "#{property.node.name} #{property.name}",
                              device: device,
                              entity_category: entity_category,
                              icon: icon)
@@ -435,7 +435,7 @@ module MQTT
         end
 
         config = base_config(property.device,
-                             property.full_name,
+                             "#{property.node.name} #{property.name}",
                              device: device,
                              device_class: device_class,
                              entity_category: entity_category,
@@ -463,7 +463,7 @@ module MQTT
         raise ArgumentError, "Homie property must be a boolean" unless property.datatype == :boolean
 
         config = base_config(property.device,
-                             property.full_name,
+                             "#{property.node.name} #{property.name}",
                              device: device,
                              device_class: device_class,
                              entity_category: entity_category,
