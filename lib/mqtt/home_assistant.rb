@@ -451,6 +451,7 @@ module MQTT
         entity_category: nil,
         icon: nil
       )
+        device_class ||= :enum if property.datatype == :enum
         if device_class && !DEVICE_CLASSES[:sensor].include?(device_class)
           raise ArgumentError, "Unrecognized device_class #{device_class.inspect}"
         end
