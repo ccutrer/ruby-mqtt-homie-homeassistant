@@ -15,6 +15,7 @@ module MQTT
         binary_sensor: %i[
           battery
           battery_charging
+          carbon_monoxide
           cold
           connectivity
           door
@@ -46,33 +47,56 @@ module MQTT
           dehumidifier
         ].freeze,
         sensor: %i[
+          apparent_power
           aqi
+          atmospheric_pressure
           battery
           carbon_dioxide
           carbon_monoxide
           current
+          data_rate
+          data_size
           date
+          distance
+          duration
           energy
+          energy_storage
+          enum
+          frequency
           gas
           humidity
           illuminance
+          irradiance
+          moisture
           monetary
           nitrogen_dioxide
           nitrogen_monoxide
           nitrous_oxide
           ozone
+          ph
           pm1
           pm10
           pm25
           power_factor
           power
+          precipitation
+          precipitation_intensity
           pressure
+          reactive_power
           signal_strength
+          sound_pressure
+          speed
           sulphur_dioxide
           temperature
           timestamp
           volatile_organic_compounds
+          volatile_organic_compounds_parts
           voltage
+          volume
+          volume_storage
+          water
+          weight
+          wind_speed
         ].freeze
       }.freeze
       STATE_CLASSES = %i[measurement total total_increasing].freeze
