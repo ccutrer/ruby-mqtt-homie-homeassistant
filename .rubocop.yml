@@ -14,7 +14,7 @@ Gemspec/DevelopmentDependencies:
 
 Naming/FileName:
   Exclude:
-    - lib/mqtt-homeassistant.rb
+    - lib/mqtt-homie-homeassistant.rb
 
 Style/BlockDelimiters:
   AllowedMethods: []
