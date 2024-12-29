@@ -119,6 +119,31 @@ module MQTT
           publish_hass_component(platform: :light, **kwargs)
         end
 
+        def hass_water_heater(
+          current_temperature_property: nil,
+          mode_property: nil,
+          power_property: nil,
+          temperature_property: nil,
+          **kwargs)
+          temperature_property = resolve_property(temperature_property)
+          current_temperature_property = resolve_property(current_temperature_property)
+          temp_properties = [
+            temperature_property,
+            current_temperature_property
+          ].compact
+          kwargs[:range] = temperature_property&.range
+          kwargs[:temperature_unit] = temp_properties.map(&:unit).compact.first
+          if power_property
+            kwargs[:payload_off] = "false"
+            kwargs[:payload_on] = "true"
+          end
+          hass_property(kwargs, current_temperature_property, :current_temperature, read_only: true)
+          hass_enum(kwargs, mode_property, :mode, MQTT::HomeAssistant::DEFAULTS[:water_heater][:modes])
+          hass_property(kwargs, power_property, :power)
+          hass_property(kwargs, temperature_property, :temperature)
+          publish_hass_component(platform: :water_heater, **kwargs)
+        end
+
         def publish
           super.tap do
             @pending_hass_registrations&.each do |(object_id, kwargs)|
