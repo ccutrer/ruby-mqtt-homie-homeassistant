@@ -23,6 +23,4 @@ Gem::Specification.new do |s|
   s.add_dependency "mqtt-homeassistant", "~> 1.0"
 
   s.add_development_dependency "rake", "~> 13.0"
-  s.add_development_dependency "rubocop-inst", "~> 1.0"
-  s.add_development_dependency "rubocop-rake", "~> 0.6"
 end
