@@ -124,7 +124,8 @@ module MQTT
           mode_property: nil,
           power_property: nil,
           temperature_property: nil,
-          **kwargs)
+          **kwargs
+        )
           temperature_property = resolve_property(temperature_property)
           current_temperature_property = resolve_property(current_temperature_property)
           temp_properties = [
