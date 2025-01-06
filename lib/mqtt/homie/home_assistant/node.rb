@@ -34,7 +34,7 @@ module MQTT
             max = temp_ranges.map(&:end).max
             kwargs[:temp_range] = min..max
           end
-          kwargs[:temperature_unit] = temp_properties.map(&:unit).compact.first
+          kwargs[:temperature_unit] = temp_properties.map(&:unit).compact.first&.yield_self { |unit| unit[-1] }
           if power_property
             kwargs[:payload_off] = "false"
             kwargs[:payload_on] = "true"
@@ -133,7 +133,7 @@ module MQTT
             current_temperature_property
           ].compact
           kwargs[:range] = temperature_property&.range
-          kwargs[:temperature_unit] = temp_properties.map(&:unit).compact.first
+          kwargs[:temperature_unit] = temp_properties.map(&:unit).compact.first&.yield_self { |unit| unit[-1] }
           if power_property
             kwargs[:payload_off] = "false"
             kwargs[:payload_on] = "true"
