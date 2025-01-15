@@ -32,6 +32,11 @@ module MQTT
                                  **kwargs)
         end
 
+        def hass_button(**kwargs)
+          hass_property(kwargs)
+          publish_hass_component(platform: :button, **kwargs)
+        end
+
         def hass_fan(**kwargs)
           raise ArgumentError, "Property must be a boolean" unless datatype == :boolean
           raise ArgumentError, "Property must be settable" unless settable?
