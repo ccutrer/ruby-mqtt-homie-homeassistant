@@ -98,6 +98,7 @@ module MQTT
             kwargs[:device_class] = :enum
             kwargs[:options] = range
           end
+          kwargs[:unit_of_measurement] = unit if unit
 
           publish_hass_component(platform: :sensor,
                                  state_topic: topic,
