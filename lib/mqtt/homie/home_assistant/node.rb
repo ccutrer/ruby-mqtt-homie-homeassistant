@@ -71,7 +71,7 @@ module MQTT
                             **kwargs)
           hass_property(kwargs, property)
           hass_property(kwargs, target_humidity_property, :target_humidity)
-          hass_property(kwargs, mode_property, :mode)
+          hass_enum(kwargs, mode_property, :mode)
           publish_hass_component(platform: :humidifier,
                                  payload_off: "false",
                                  payload_on: "true",
