@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mqtt-homie-homeassistant (1.0.6)
+    mqtt-homie-homeassistant (1.1.0)
       homie-mqtt (~> 1.7)
       mqtt-homeassistant (~> 1.0, >= 1.0.3)
 
