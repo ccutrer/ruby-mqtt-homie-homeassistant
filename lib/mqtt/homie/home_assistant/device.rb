@@ -4,9 +4,18 @@ module MQTT
   module Homie
     module HomeAssistant
       module Device
-        def self.included(klass)
+        def self.prepended(klass)
           super
           klass.attr_accessor :home_assistant_device, :home_assistant_discovery_prefix
+        end
+
+        def initialize(*args, home_assistant_discovery: true, **kwargs)
+          super(*args, **kwargs)
+          @home_assistant_discovery = home_assistant_discovery
+        end
+
+        def home_assistant_discovery?
+          @home_assistant_discovery
         end
 
         # @!visibility private
@@ -25,6 +34,6 @@ module MQTT
         end
       end
     end
-    Device.include(HomeAssistant::Device)
+    Device.prepend(HomeAssistant::Device)
   end
 end

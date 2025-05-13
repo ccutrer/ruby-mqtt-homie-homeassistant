@@ -150,6 +150,8 @@ module MQTT
         private
 
         def publish_hass_component(device: nil, discovery_prefix: nil, object_id: nil, **kwargs)
+          return unless self.device.home_assistant_discovery?
+
           discovery_prefix ||= self.device.home_assistant_discovery_prefix
           device = self.device.home_assistant_device.merge(device || {}) if self.device.home_assistant_device
 
@@ -159,6 +161,7 @@ module MQTT
           kwargs[:discovery_prefix] ||= discovery_prefix
           kwargs[:unique_id] ||= "#{self.device.id}_#{object_id}"
           self.device.base_hass_config(kwargs)
+
           if published?
             self.device.mqtt.publish_hass_component(object_id, **kwargs)
           else
