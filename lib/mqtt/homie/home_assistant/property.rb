@@ -132,6 +132,7 @@ module MQTT
           if !read_only && settable?
             config[:"#{prefix}command_topic"] = "#{topic}/set"
             config[:"#{prefix}command_template"] = "{{ value | round(0) }}" if datatype == :integer
+            config[:optimistic] = true if optimistic? && !config.key?(:optimistic)
           end
           config.merge!(templates.slice(:"#{prefix}template", :"#{prefix}command_template"))
         end
