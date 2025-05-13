@@ -29,7 +29,7 @@ module MQTT
           config[:device][:name] ||= name
           config[:device][:identifiers] ||= id
           config[:device][:sw_version] ||= MQTT::Homie::Device::VERSION
-          config[:node_id] = id
+          config[:node_id] ||= id
           config[:qos] = 1
         end
       end
