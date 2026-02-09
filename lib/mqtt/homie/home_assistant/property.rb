@@ -33,8 +33,15 @@ module MQTT
         end
 
         def hass_button(**kwargs)
+          raise ArgumentError, "Property must be an enum" unless datatype == :enum
+          raise ArgumentError, "Property must be settable" unless settable?
+          raise ArgumentError, "Property must not be retained" if retained?
+          raise ArgumentError, "Property must have one valid enum value" unless range.length == 1
+
           hass_property(kwargs)
-          publish_hass_component(platform: :button, **kwargs)
+          publish_hass_component(platform: :button,
+                                 payload_press: format,
+                                 **kwargs)
         end
 
         def hass_fan(**kwargs)
