@@ -10,3 +10,5 @@ if RUBY_VERSION >= "2.7"
   gem "rubocop-inst", "~> 1.0"
   gem "rubocop-rake", "~> 0.6"
 end
+
+gem "mqtt-homeassistant", path: "../ruby-mqtt-homeassistant"

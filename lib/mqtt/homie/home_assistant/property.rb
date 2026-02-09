@@ -161,14 +161,19 @@ module MQTT
           return unless self.device.home_assistant_discovery?
 
           discovery_prefix ||= self.device.home_assistant_discovery_prefix
-          device = self.device.home_assistant_device.merge(device || {}) if self.device.home_assistant_device
 
           object_id ||= "#{node.id}_#{id}"
           kwargs[:name] ||= "#{node.name} #{name}"
-          kwargs[:device] = device
           kwargs[:discovery_prefix] ||= discovery_prefix
           kwargs[:unique_id] ||= "#{self.device.id}_#{object_id}"
-          self.device.base_hass_config(kwargs)
+          unless self.device.home_assistant_device_discovery?
+            device = self.device.home_assistant_device.merge(device || {}) if self.device.home_assistant_device
+            kwargs[:device] = device if device
+            origin = self.device.home_assistant_origin.merge(origin || {}) if self.device.home_assistant_origin
+            kwargs[:origin] = origin if origin
+
+            self.device.base_hass_config(kwargs)
+          end
 
           if published?
             self.device.mqtt.publish_hass_component(object_id, **kwargs)
