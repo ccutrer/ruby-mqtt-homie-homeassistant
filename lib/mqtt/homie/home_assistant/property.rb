@@ -4,8 +4,8 @@ module MQTT
   module Homie
     module HomeAssistant
       module Property
-        def initialize(*args, hass: nil, **kwargs)
-          super(*args, **kwargs)
+        def initialize(*, hass: nil, **)
+          super(*, **)
 
           return unless hass
 
@@ -80,7 +80,7 @@ module MQTT
           publish_hass_component(platform: :number, **kwargs)
         end
 
-        def hass_scene(**kwargs)
+        def hass_scene(**)
           unless datatype == :enum && range.length == 1
             raise ArgumentError, "Property must be an enum with a single value"
           end
@@ -89,7 +89,7 @@ module MQTT
           publish_hass_component(platform: :scene,
                                  command_topic: "#{topic}/set",
                                  payload_on: range.first,
-                                 **kwargs)
+                                 **)
         end
 
         def hass_select(**kwargs)

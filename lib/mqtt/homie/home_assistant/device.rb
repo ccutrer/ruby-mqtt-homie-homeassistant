@@ -9,8 +9,8 @@ module MQTT
           klass.attr_accessor :home_assistant_device, :home_assistant_origin, :home_assistant_discovery_prefix
         end
 
-        def initialize(*args, home_assistant_discovery: true, **kwargs)
-          super(*args, **kwargs)
+        def initialize(*, home_assistant_discovery: true, **)
+          super(*, **)
           @home_assistant_discovery = home_assistant_discovery
         end
 

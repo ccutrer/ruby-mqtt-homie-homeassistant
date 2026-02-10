@@ -1,11 +1,4 @@
 PATH
-  remote: ../ruby-mqtt-homeassistant
-  specs:
-    mqtt-homeassistant (1.2.0)
-      json (~> 2.0)
-      mqtt-ccutrer (~> 1.0, >= 1.0.3)
-
-PATH
   remote: .
   specs:
     mqtt-homie-homeassistant (1.1.1)
@@ -36,6 +29,9 @@ GEM
     logger (1.7.0)
     mqtt-ccutrer (1.1.0)
       logger (~> 1.7)
+    mqtt-homeassistant (1.2.0)
+      json (~> 2.0)
+      mqtt-ccutrer (~> 1.0, >= 1.0.3)
     parallel (1.27.0)
     parser (3.3.10.1)
       ast (~> 2.4.1)
@@ -94,9 +90,8 @@ PLATFORMS
 
 DEPENDENCIES
   debug (~> 1.9)
-  mqtt-homeassistant!
   mqtt-homie-homeassistant!
-  rake (~> 13.0)
+  rake (~> 13.3)
   rubocop-inst (~> 1.0)
   rubocop-rake (~> 0.6)
 

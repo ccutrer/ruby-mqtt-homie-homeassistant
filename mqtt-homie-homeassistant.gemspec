@@ -17,10 +17,8 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{lib}/**/*"]
 
-  s.required_ruby_version = ">= 2.5"
+  s.required_ruby_version = ">= 3.2"
 
   s.add_dependency "homie-mqtt", "~> 1.7"
   s.add_dependency "mqtt-homeassistant", "~> 1.2"
-
-  s.add_development_dependency "rake", "~> 13.0"
 end

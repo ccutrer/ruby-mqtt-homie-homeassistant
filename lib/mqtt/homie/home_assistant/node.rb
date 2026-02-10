@@ -29,12 +29,12 @@ module MQTT
             temperature_high_property,
             temperature_low_property
           ].compact
-          unless (temp_ranges = temp_properties.map(&:range).compact).empty?
+          unless (temp_ranges = temp_properties.filter_map(&:range)).empty?
             min = temp_ranges.map(&:begin).min
             max = temp_ranges.map(&:end).max
             kwargs[:temp_range] = min..max
           end
-          kwargs[:temperature_unit] = temp_properties.map(&:unit).compact.first&.yield_self { |unit| unit[-1] }
+          kwargs[:temperature_unit] = temp_properties.filter_map(&:unit).first&.then { |unit| unit[-1] }
           if power_property
             kwargs[:payload_off] = "false"
             kwargs[:payload_on] = "true"
@@ -133,7 +133,7 @@ module MQTT
             current_temperature_property
           ].compact
           kwargs[:range] = temperature_property&.range
-          kwargs[:temperature_unit] = temp_properties.map(&:unit).compact.first&.yield_self { |unit| unit[-1] }
+          kwargs[:temperature_unit] = temp_properties.filter_map(&:unit).first&.then { |unit| unit[-1] }
           if power_property
             kwargs[:payload_off] = "false"
             kwargs[:payload_on] = "true"
@@ -167,7 +167,7 @@ module MQTT
         end
 
         def hass_property(config, property, prefix = nil, read_only: false, templates: {})
-          resolve_property(property)&.hass_property(config, prefix, read_only: read_only, templates: templates)
+          resolve_property(property)&.hass_property(config, prefix, read_only:, templates:)
         end
 
         def hass_enum(config, property, prefix = nil, valid_set = nil)
