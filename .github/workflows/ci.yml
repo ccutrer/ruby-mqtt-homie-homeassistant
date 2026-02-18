@@ -1,4 +1,4 @@
-name: Rubocop
+name: CI
 
 on:
   push:
