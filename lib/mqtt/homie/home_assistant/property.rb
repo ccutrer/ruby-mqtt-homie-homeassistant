@@ -36,7 +36,15 @@ module MQTT
           raise ArgumentError, "Property must be an enum" unless datatype == :enum
           raise ArgumentError, "Property must be settable" unless settable?
           raise ArgumentError, "Property must not be retained" if retained?
-          raise ArgumentError, "Property must have one valid enum value" unless range.length == 1
+
+          unless range.length == 1 || kwargs.include?(:payload_press)
+            raise ArgumentError,
+                  "Property must have one valid enum value"
+          end
+          if kwargs[:payload_press] && !range.include?(kwargs[:payload_press].to_s)
+            raise ArgumentError,
+                  "payload_press must be a valid enum value"
+          end
 
           hass_property(kwargs)
           publish_hass_component(platform: :button,

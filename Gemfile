@@ -6,5 +6,6 @@ gemspec
 
 gem "debug", "~> 1.9"
 gem "rake", "~> 13.3"
+gem "rspec", "~> 3.13"
 gem "rubocop-inst", "~> 1.0"
 gem "rubocop-rake", "~> 0.6"

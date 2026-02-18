@@ -7,10 +7,8 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
-
+  ci:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up Ruby
@@ -20,5 +18,7 @@ jobs:
           bundler-cache: true
       - name: Install dependencies
         run: bundle install
-      - name: Run rubocop
+      - name: Run RuboCop
         run: bin/rubocop
+      - name: Run RSpec
+        run: bin/rspec

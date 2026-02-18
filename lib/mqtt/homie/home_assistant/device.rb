@@ -45,7 +45,7 @@ module MQTT
           config[:device][:name] ||= name
           config[:device][:identifiers] ||= id
           config[:origin] ||= {}
-          config[:origin][:sw_version] ||= MQTT::Homie::Device::VERSION
+          config[:origin][:sw_version] ||= MQTT::Homie::HomeAssistant::VERSION
           config[:origin][:name] ||= name
           config[:node_id] ||= id unless home_assistant_device_discovery?
           config[:qos] = 1
