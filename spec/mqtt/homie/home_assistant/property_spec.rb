@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 RSpec.describe MQTT::Homie::HomeAssistant::Property do
+  subject(:property) do
+    node.property("property", "property", datatype, format:, retained:, &block).tap do |p|
+      allow(p).to receive(:published?).and_return(true)
+    end
+  end
+
   let(:mqtt) do
     MQTT::Client.new.tap do |mqtt|
       allow(mqtt).to receive_messages(connect: nil,
@@ -29,11 +35,6 @@ RSpec.describe MQTT::Homie::HomeAssistant::Property do
       "qos" => 1,
       "uniq_id" => "device_node_property"
     }
-  end
-  subject(:property) do
-    node.property("property", "property", datatype, format:, retained:, &block).tap do |p|
-      allow(p).to receive(:published?).and_return(true)
-    end
   end
 
   def expect_publish(discovery_config)
